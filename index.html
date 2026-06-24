@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Somesh Chandra | Data Architect</title>
+<style>
+  :root {
+    --bg: #161b2e;
+    --bg-card: #1e2540;
+    --bg-card-hover: #252c4d;
+    --border: #323a5e;
+    --text: #eef0ff;
+    --text-dim: #a8b0d4;
+    --accent: #5eead4;
+    --accent-dim: #2dd4bf;
+    --accent-glow: rgba(94, 234, 212, 0.35);
+    --accent2: #a78bfa;
+    --accent2-glow: rgba(167, 139, 250, 0.35);
+    --gradient: linear-gradient(135deg, #5eead4 0%, #a78bfa 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .bg-glow {
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-glow2 {
+    position: fixed;
+    bottom: -300px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, var(--accent2-glow) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+    background: rgba(10, 14, 23, 0.8);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+  }
+  .logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .toggle-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+  }
+
+  main { max-width: 1000px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  .hero {
+    padding-top: 100px;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+  .hero-text { flex: 1; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--accent);
+    background: var(--accent-glow);
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+  .hero h1 .accent {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p.subtitle {
+    font-size: 18px;
+    color: var(--text-dim);
+    margin-bottom: 28px;
+    max-width: 480px;
+  }
+  .hero-cta { display: flex; gap: 14px; }
+
+  .btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--gradient);
+    color: #0a0e17;
+    box-shadow: 0 0 24px var(--accent-glow);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 36px var(--accent-glow), 0 8px 24px var(--accent2-glow); }
+  .btn-secondary {
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent-dim); box-shadow: 0 0 16px var(--accent-glow); }
+
+  .avatar-ring {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: var(--gradient);
+    padding: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 50px var(--accent-glow), 0 0 90px var(--accent2-glow);
+  }
+  .avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    font-weight: 800;
+    color: var(--accent);
+    overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+  .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 36px;
+    letter-spacing: -0.02em;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 40px;
+  }
+  .about-text p { color: var(--text-dim); margin-bottom: 16px; font-size: 15px; }
+  .about-text strong { color: var(--text); }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+  .stat-card .num { font-size: 22px; font-weight: 800; color: var(--accent); }
+  .stat-card .label { font-size: 13px; color: var(--text-dim); }
+
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .cert-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.2s;
+  }
+  .cert-card:hover {
+    border-color: var(--accent-dim);
+    transform: translateY(-3px);
+    background: var(--bg-card-hover);
+    box-shadow: 0 0 24px var(--accent-glow);
+  }
+  .cert-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--accent-glow);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    font-size: 16px;
+    box-shadow: 0 0 14px var(--accent-glow);
+  }
+  .cert-card h4 { font-size: 15px; margin-bottom: 4px; }
+  .cert-card p { font-size: 13px; color: var(--text-dim); }
+
+  .repo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .repo-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .repo-card:hover { border-color: var(--accent-dim); transform: translateY(-3px); box-shadow: 0 0 24px var(--accent2-glow); }
+  .repo-card .repo-name {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .repo-card .repo-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+    min-height: 36px;
+  }
+  .repo-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .repo-meta span { display: flex; align-items: center; gap: 5px; }
+  .lang-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+  }
+  .repo-status {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 20px;
+    grid-column: 1 / -1;
+  }
+
+  /* Chat widget */
+  .chat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 0 40px var(--accent-glow);
+  }
+  .chat-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .chat-header .bot-icon {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 0 16px var(--accent2-glow);
+  }
+  .chat-header .title { font-weight: 700; font-size: 14px; }
+  .chat-header .status { font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+
+  .chat-body {
+    height: 280px;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .msg {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .msg.bot {
+    background: #1a2332;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+  .msg.user {
+    background: var(--accent-dim);
+    color: #0a0e17;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    font-weight: 500;
+  }
+
+  .chat-input-row {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+  }
+  .chat-input-row input {
+    flex: 1;
+    background: #0d1320;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+  }
+  .chat-input-row input:focus { border-color: var(--accent-dim); }
+  .chat-input-row button {
+    background: var(--gradient);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 700;
+    color: #0a0e17;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 64px;
+  }
+  .chat-input-row button:disabled { opacity: 0.6; cursor: default; }
+  .suggestions {
+    padding: 0 20px 16px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .suggestion-chip {
+    font-size: 12px;
+    background: #0d1320;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .suggestion-chip:hover { border-color: var(--accent-dim); color: var(--accent); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .contact-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .contact-card:hover { border-color: var(--accent-dim); transform: translateY(-3px); box-shadow: 0 0 24px var(--accent-glow); }
+  .contact-card .c-icon { font-size: 22px; }
+  .contact-card .c-label { font-size: 13px; color: var(--text-dim); }
+  .contact-card .c-value { font-size: 14px; font-weight: 600; }
+
+  footer {
+    text-align: center;
+    padding: 32px 0;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  @media (max-width: 700px) {
+    .hero { flex-direction: column; text-align: center; padding-top: 60px; }
+    .hero p.subtitle { margin: 0 auto 28px; }
+    .hero-cta { justify-content: center; flex-wrap: wrap; }
+    .about-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
+
+<nav>
+  <div class="logo">Somesh<span>.</span>Chandra</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certs">Certifications</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#chat">Ask Me</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="toggle-pill"><span class="dot"></span> Chatbot: Live</div>
+</nav>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-text">
+      <span class="hero-tag">🟢 Open to opportunities</span>
+      <h1>Hi, I'm Somesh.<br><span class="accent">Data Architect.</span></h1>
+      <p class="subtitle">I design and build enterprise-grade Data Lake, Lakehouse, and AI-ready data platforms on AWS and Azure for major UK organisations. This site is my living CV — explore my certifications, my code, or just ask my AI assistant about me directly.</p>
+      <div class="hero-cta">
+        <a href="#chat" class="btn btn-primary">💬 Ask my AI about me</a>
+        <a href="#projects" class="btn btn-secondary">View my work</a>
+      </div>
+    </div>
+    <div class="avatar-ring">
+      <div class="avatar"><img src="someshpic.jpeg" alt="Somesh Chandra"></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-label">Who I Am</div>
+    <h2 class="section-title">About Me</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a <strong>Data Architect</strong> based in the UK, with close to two decades of experience designing and building data platforms that turn complex, messy data into something organisations can actually trust and act on.</p>
+        <p>My core expertise is in building <strong>Data Lake, Delta Lake, and Lakehouse architectures on AWS and Azure</strong> — the kind of foundations that power advanced analytics, AI, and machine learning workloads at scale. I'm certified across <strong>AWS, Databricks, and Snowflake</strong>, and I bring hands-on depth in Spark, Databricks, dbt, EMR, AWS Glue, Hadoop, Hive, SQL, Python, and PySpark.</p>
+        <p>Most recently, I led the build of an enterprise-grade Lakehouse on Databricks/Azure for one of the UK's largest building societies — owning the data strategy roadmap, tooling decisions, and a cross-functional engineering and BI team. Earlier in my career, I worked on clinical trial and drug development data at Novartis, and led data engineering for a major telecom and energy client base at Cognizant.</p>
+        <p>Beyond the platform work, I've ventured into <strong>GenAI</strong> — building a RAG and vector-search based solution on Databricks for internal knowledge access, and deploying ML models (logistic regression, XGBoost) on AWS SageMaker. I also care about doing this properly: DevOps, CI/CD, code quality (SonarQube, lint tooling), and proper governance are part of how I work, not an afterthought.</p>
+      </div>
+      <div>
+        <div class="stat-card"><div class="num">18+ yrs</div><div class="label">Experience in IT &amp; Data</div></div>
+        <div class="stat-card"><div class="num">UK</div><div class="label">Based, open to remote</div></div>
+        <div class="stat-card"><div class="num">5</div><div class="label">Cloud &amp; Data Certifications</div></div>
+        <div class="stat-card"><div class="num">Banking · Pharma · Telecom · Energy</div><div class="label">Domains served</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-label">Career Journey</div>
+    <h2 class="section-title">Experience</h2>
+    <div class="cert-grid">
+      <div class="cert-card"><div class="cert-icon">🏦</div><h4>Data Architect</h4><p>Tata Consultancy Services · Dec 2021 – Present</p></div>
+      <div class="cert-card"><div class="cert-icon">💊</div><h4>Senior Data Engineer</h4><p>Novartis · Jun 2020 – Dec 2021</p></div>
+      <div class="cert-card"><div class="cert-icon">📡</div><h4>Cloud Data Architect</h4><p>Cognizant Technology Solutions · Nov 2014 – Jun 2020</p></div>
+      <div class="cert-card"><div class="cert-icon">💻</div><h4>Senior Software Developer</h4><p>Orga Systems India Pvt Ltd · Jul 2014 – Nov 2014</p></div>
+      <div class="cert-card"><div class="cert-icon">🖥️</div><h4>System Engineer</h4><p>IBM · Aug 2011 – Jun 2014</p></div>
+      <div class="cert-card"><div class="cert-icon">📞</div><h4>Technical Associate</h4><p>Tech Mahindra Ltd · Jul 2007 – Aug 2011</p></div>
+    </div>
+  </section>
+
+  <section id="certs">
+    <div class="section-label">Credentials</div>
+    <h2 class="section-title">Certifications</h2>
+    <div class="cert-grid">
+      <div class="cert-card"><div class="cert-icon">🧱</div><h4>Databricks Certified Data Engineer Professional</h4><p>Databricks</p></div>
+      <div class="cert-card"><div class="cert-icon">🤖</div><h4>Databricks Certified Generative AI Engineer Associate</h4><p>Databricks</p></div>
+      <div class="cert-card"><div class="cert-icon">📦</div><h4>Databricks Certified Data Engineer Associate</h4><p>Databricks</p></div>
+      <div class="cert-card"><div class="cert-icon">☁️</div><h4>AWS Certified Solutions Architect – Associate</h4><p>Amazon Web Services</p></div>
+      <div class="cert-card"><div class="cert-icon">❄️</div><h4>SnowPro Associate</h4><p>Snowflake</p></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-label">From GitHub</div>
+    <h2 class="section-title">Pinned Projects</h2>
+    <div class="repo-grid" id="repoGrid">
+      <div class="repo-status">Loading live repos from GitHub...</div>
+    </div>
+  </section>
+
+  <section id="chat">
+    <div class="section-label">Ask Me Anything</div>
+    <h2 class="section-title">Chat With My AI Assistant</h2>
+    <div class="chat-card">
+      <div class="chat-header">
+        <div class="bot-icon">🤖</div>
+        <div>
+          <div class="title">Somesh's AI Assistant</div>
+          <div class="status"><span class="dot"></span> Trained on Somesh's profile</div>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="msg bot">Hi! I'm an AI assistant trained on Somesh's background. Ask me about his experience, skills, or projects — try one of the suggestions below 👇</div>
+      </div>
+      <div class="suggestions">
+        <div class="suggestion-chip" onclick="sendMessage(this.textContent)">What does Somesh specialize in?</div>
+        <div class="suggestion-chip" onclick="sendMessage(this.textContent)">Is he available for hire?</div>
+        <div class="suggestion-chip" onclick="sendMessage(this.textContent)">Tell me about his certifications</div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Ask about Somesh's experience, skills, or projects..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()" id="sendBtn">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-label">Let's Connect</div>
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-grid">
+      <a href="mailto:someshchandra007@gmail.com" class="contact-card"><div class="c-icon">📧</div><div class="c-label">Email</div><div class="c-value">someshchandra007@gmail.com</div></a>
+      <a href="https://www.linkedin.com/in/somesh-chandra-9853023a/" target="_blank" class="contact-card"><div class="c-icon">💼</div><div class="c-label">LinkedIn</div><div class="c-value">somesh-chandra</div></a>
+      <a href="https://github.com/someshchandra007" target="_blank" class="contact-card"><div class="c-icon">🐙</div><div class="c-label">GitHub</div><div class="c-value">@someshchandra007</div></a>
+      <a href="tel:+447747267818" class="contact-card"><div class="c-icon">📱</div><div class="c-label">Phone</div><div class="c-value">07747 267818</div></a>
+    </div>
+  </section>
+
+  <footer>Built &amp; designed by Somesh Chandra · Powered by GitHub Pages</footer>
+
+</main>
+
+<script>
+  // ===================== GitHub pinned repos =====================
+  const GITHUB_USERNAME = "someshchandra007";
+
+  const langColors = {
+    JavaScript: "#facc15", TypeScript: "#3b82f6", Python: "#5eead4",
+    HTML: "#f97316", CSS: "#a78bfa", Java: "#fb7185", "C++": "#60a5fa",
+    "C#": "#34d399", Go: "#22d3ee", Ruby: "#f87171", PHP: "#818cf8",
+    Shell: "#94a3b8", "Jupyter Notebook": "#fb923c"
+  };
+
+  async function loadRepos() {
+    const grid = document.getElementById('repoGrid');
+    try {
+      const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`);
+      if (!res.ok) throw new Error('GitHub API error: ' + res.status);
+      let repos = await res.json();
+
+      repos = repos
+        .filter(r => !r.fork)
+        .sort((a, b) => (b.stargazers_count - a.stargazers_count) || (new Date(b.updated_at) - new Date(a.updated_at)))
+        .slice(0, 6);
+
+      if (repos.length === 0) {
+        grid.innerHTML = '<div class="repo-status">No public repositories found yet.</div>';
+        return;
+      }
+
+      grid.innerHTML = repos.map(r => {
+        const lang = r.language || '';
+        const color = langColors[lang] || '#94a3b8';
+        const desc = r.description ? r.description : 'No description provided.';
+        return `
+          <div class="repo-card" onclick="window.open('${r.html_url}', '_blank')">
+            <div class="repo-name">📦 ${r.name}</div>
+            <div class="repo-desc">${desc.length > 90 ? desc.slice(0, 90) + '…' : desc}</div>
+            <div class="repo-meta">
+              ${lang ? `<span><span class="lang-dot" style="background:${color}"></span>${lang}</span>` : ''}
+              <span>⭐ ${r.stargazers_count}</span>
+              <span>🍴 ${r.forks_count}</span>
+            </div>
+          </div>`;
+      }).join('');
+    } catch (err) {
+      grid.innerHTML = `<div class="repo-status">Couldn't load repos right now (${err.message}). This will work correctly once deployed to a real domain — GitHub's API may be rate-limiting this preview sandbox.</div>`;
+    }
+  }
+  loadRepos();
+
+  // ===================== Chatbot wired to Cloudflare Worker =====================
+  const WORKER_URL = "https://askario.someshchandra007.workers.dev/";
+  let chatBusy = false;
+
+  function appendMsg(text, cls) {
+    const body = document.getElementById('chatBody');
+    const msg = document.createElement('div');
+    msg.className = 'msg ' + cls;
+    msg.textContent = text;
+    body.appendChild(msg);
+    body.scrollTop = body.scrollHeight;
+    return msg;
+  }
+
+  async function sendMessage(prefilled) {
+    if (chatBusy) return;
+    const input = document.getElementById('chatInput');
+    const text = (typeof prefilled === 'string' && prefilled.trim()) ? prefilled.trim() : input.value.trim();
+    if (!text) return;
+
+    appendMsg(text, 'user');
+    input.value = '';
+    chatBusy = true;
+    const btn = document.getElementById('sendBtn');
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    const thinkingMsg = appendMsg('Thinking...', 'bot');
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      });
+      const data = await res.json();
+      thinkingMsg.textContent = data.reply || data.error || "Sorry, something went wrong. Please try again.";
+    } catch (err) {
+      thinkingMsg.textContent = "Couldn't reach the assistant right now. Please try again in a moment, or use the contact section below.";
+    } finally {
+      chatBusy = false;
+      btn.disabled = false;
+      btn.textContent = 'Send';
+      document.getElementById('chatBody').scrollTop = document.getElementById('chatBody').scrollHeight;
+    }
+  }
+</script>
+
+</body>
+</html>
